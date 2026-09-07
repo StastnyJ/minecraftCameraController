@@ -4,19 +4,20 @@ from mediapipe.tasks.python import vision
 import cv2
 import time
 from visualize_hand import draw_landmarks_on_image
-from detect_action import detect_action
+from detect_action import Gesture_Manager
 import keyboard
 import random as rd
 from add_crosshairs_to_camera import add_crosshairs_to_camera
 
 # set up camera
-cam = cv2.VideoCapture('/dev/video33', cv2.CAP_V4L2)
+cam = cv2.VideoCapture('/dev/video34', cv2.CAP_V4L2)
 
 # setup gesture recognizer model
 BaseOptions = mp.tasks.BaseOptions
 GestureRecognizer = mp.tasks.vision.GestureRecognizer
 GestureRecognizerOptions = mp.tasks.vision.GestureRecognizerOptions
 VisionRunningMode = mp.tasks.vision.RunningMode
+
 
 gesture_recognizer_modelpath = '/home/stastnyj/Dev/minecraftControll/gesture_recognizer.task'
 gesture_recognizer_base_options = GestureRecognizerOptions(
@@ -30,9 +31,13 @@ gesture_recognizer_base_options = GestureRecognizerOptions(
 
 # with HandLandmarker.create_from_options(hand_landmarker_options) as landmarker:
 with GestureRecognizer.create_from_options(gesture_recognizer_base_options) as recognizer:
+    gm = Gesture_Manager()
     while True:
         ret, frame = cam.read()
 
+        if not ret:
+            print("Failed to grab frame")
+            break
 
         # Press 'q' to exit the loop
         if cv2.waitKey(1) == ord('q'):
@@ -45,11 +50,10 @@ with GestureRecognizer.create_from_options(gesture_recognizer_base_options) as r
             if category_name == "Closed_Fist":
                 keyboard.press('q')
         if (len(recognized_gestures.gestures)) == 2:
-            detect_action(recognized_gestures)
-        # if recognized_gestures.hand_landmarks:
-        #     x = recognized_gestures.hand_landmarks[0][0].x
-        #     y = recognized_gestures.hand_landmarks[0][0].y
-        #     print(f"Hand landmark coordinates: x={x}, y={y}")
+            Gesture_Manager().detect_action(recognized_gestures)
+        if recognized_gestures.hand_landmarks:
+            x = recognized_gestures.hand_landmarks[0][0].x
+            y = recognized_gestures.hand_landmarks[0][0].y
         # print(recognized_gestures.gestures[0][3] if len(recognized_gestures.gestures[0]) > 3 else "No gesture detected")
 
         
