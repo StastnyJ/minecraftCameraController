@@ -6,42 +6,36 @@ import time
 from visualize_hand import draw_landmarks_on_image
 
 
+# set up camera
 cam = cv2.VideoCapture('/dev/video33', cv2.CAP_V4L2)
 
-
-model_path = '/home/stastnyj/Dev/minecraftControll/hand_landmarker.task'
-
-
+# setup gesture recognizer model
 BaseOptions = mp.tasks.BaseOptions
-HandLandmarker = mp.tasks.vision.HandLandmarker
-HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
-HandLandmarkerResult = mp.tasks.vision.HandLandmarkerResult
+GestureRecognizer = mp.tasks.vision.GestureRecognizer
+GestureRecognizerOptions = mp.tasks.vision.GestureRecognizerOptions
 VisionRunningMode = mp.tasks.vision.RunningMode
 
-
-base_options = python.BaseOptions(model_asset_path=model_path)
-options = vision.HandLandmarkerOptions(
-    base_options=base_options,
-    min_hand_detection_confidence=0.2,
-    min_hand_presence_confidence=0.5,
-    min_tracking_confidence=0.5,
+gesture_recognizer_modelpath = '/home/stastnyj/Dev/minecraftControll/gesture_recognizer.task'
+gesture_recognizer_base_options = GestureRecognizerOptions(
+    base_options=BaseOptions(model_asset_path=gesture_recognizer_modelpath),
+    running_mode=VisionRunningMode.IMAGE,
     num_hands=2
 )
 
-
-with HandLandmarker.create_from_options(options) as landmarker:
-  # The landmarker is initialized. Use it here.
-  # ...
+# with HandLandmarker.create_from_options(hand_landmarker_options) as landmarker:
+with GestureRecognizer.create_from_options(gesture_recognizer_base_options) as recognizer:
 
     while True:
         ret, frame = cam.read()
-        result = landmarker.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=frame))
-        # Display the captured frame
-        cv2.imshow('Camera', cv2.flip(draw_landmarks_on_image(frame, result), 1))
 
         # Press 'q' to exit the loop
         if cv2.waitKey(1) == ord('q'):
             break
 
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
-    
+        recogn = recognizer.recognize(mp_image)
+        print(recogn.gestures[0].category_name if len(recogn.gestures) > 0 else "No gesture detected")
+
+        
+
+        cv2.imshow('Camera', cv2.flip(draw_landmarks_on_image(frame, recogn), 1))
