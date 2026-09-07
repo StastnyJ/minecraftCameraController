@@ -1,0 +1,3 @@
+unset LD_LIBRARY_PATH
+unset GTK_PATH
+unset GIO_MODULE_DIR
