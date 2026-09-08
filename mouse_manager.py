@@ -1,7 +1,7 @@
 import pyautogui
 import math
 
-MOUSE_SENSITIVITY = 3000
+MOUSE_SENSITIVITY = 600
 
 class MouseManager():
     def __init__(self):
