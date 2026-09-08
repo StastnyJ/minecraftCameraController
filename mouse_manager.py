@@ -1,7 +1,7 @@
 import pyautogui
 import math
 
-MOUSE_SENSITIVITY = 3000
+MOUSE_SENSITIVITY = 150
 
 class MouseManager():
     def __init__(self):
@@ -15,8 +15,10 @@ class MouseManager():
         current_mouse_pos = pyautogui.position()
 
         new_pos = (math.floor(current_mouse_pos.x + vector[0] * -MOUSE_SENSITIVITY), math.floor(current_mouse_pos.y + vector[1] * MOUSE_SENSITIVITY))
+        vector_length = math.sqrt(vector[0] ** 2 + vector[1] ** 2)
+        
 
-        pyautogui.moveTo(new_pos, duration=3)
+        pyautogui.moveTo(new_pos, duration=vector_length * 2)
         print(f"Moved mouse to {pyautogui.position()}")
 
     def scroll_down(self):
@@ -24,3 +26,5 @@ class MouseManager():
 
     def scroll_up(self):
         pyautogui.scroll(-1)
+
+        
