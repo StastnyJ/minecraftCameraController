@@ -34,6 +34,11 @@ class KeyBoardManager():
 
 
 
+    def do_nothing(self):
+        to_press = {'w':False, 'a':False, 's':False, 'd':False}
+        self.press_keys(to_press)
+        self.pressed_movement = to_press
+
 
     def do_w(self):
         to_press = {'w':True, 'a':False, 's':False, 'd':False}
@@ -103,6 +108,10 @@ class KeyBoardManager():
 
     def change_inventory_to_right(self):
         pass
+
+    def clear_all_actions(self):
+        self.release_space()
+        self.do_nothing()
     
 """
 
