@@ -8,7 +8,7 @@ def add_crosshairs_to_camera(img):
     # img = cv2.circle(img, center = (w//4, h//2), radius=h//8, color=(0,0,255), thickness=3)
 
     # right cross hair
-    img = cv2.circle(img, center = (w//4*3, h//2), radius=h//8, color=(0,0,255), thickness=3)
+    img = cv2.circle(img, center = (w//4*3, h//2), radius=h//12, color=(0,0,255), thickness=3)
 
 
     return img
