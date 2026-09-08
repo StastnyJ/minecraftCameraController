@@ -52,7 +52,9 @@ with GestureRecognizer.create_from_options(gesture_recognizer_base_options) as r
         #     if category_name == "Closed_Fist":
         #         keyboard.press('q')
         if (len(recognized_gestures.gestures)) == 2:
-            Gesture_Manager().detect_action(recognized_gestures)
+            gm.detect_action(recognized_gestures)
+        else:
+            gm.kbd_mng.do_nothing()
         # if recognized_gestures.hand_landmarks:
         #     x = recognized_gestures.hand_landmarks[0][0].x
         #     y = recognized_gestures.hand_landmarks[0][0].y
