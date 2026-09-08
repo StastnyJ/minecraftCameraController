@@ -9,12 +9,13 @@ from detect_action import Gesture_Manager
 import random as rd
 from add_crosshairs_to_camera import add_crosshairs_to_camera
 import getpass
+print(getpass.getuser())
 
 # set up camera
 if getpass.getuser() == 'michael':
     # michael's cam
     cam = cv2.VideoCapture(0)
-elif getpass.getuser() == 'stastnyj':
+elif getpass.getuser() == 'root':
     cam = cv2.VideoCapture('/dev/video1', cv2.CAP_V4L2)
 else:
     raise ValueError('unknown user of the computer to choose right camera')
@@ -25,10 +26,9 @@ GestureRecognizer = mp.tasks.vision.GestureRecognizer
 GestureRecognizerOptions = mp.tasks.vision.GestureRecognizerOptions
 VisionRunningMode = mp.tasks.vision.RunningMode
 
-
 if getpass.getuser() == 'michael':
     gesture_recognizer_modelpath = '/home/michael/Documents/GitHub/KSP-MFF-CUNI/jednorázové/k-scuk-26/minecraftCameraController/gesture_recognizer.task'
-elif getpass.getuser() == 'stastnyj':
+elif getpass.getuser() == 'root':
     gesture_recognizer_modelpath = '/home/stastnyj/Dev/minecraftControll/gesture_recognizer.task'
 else:
     raise ValueError('unknow user of the computer to choose right path')
