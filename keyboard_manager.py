@@ -1,10 +1,11 @@
-from pynput.keyboard import Controller
+from pynput.keyboard import Controller, Key
 import time
 
 class KeyBoardManager():
 
     def __init__(self):
         self.pressed_movement = {'w': False, 'a':False, 's':False, 'd':False}  
+        self.pressed_space = False
         self.keyboard = Controller()
 
 
@@ -18,18 +19,18 @@ class KeyBoardManager():
         pass
 
     def press_keys(self, to_press):
-        print(self.pressed_movement)
-        print(to_press)
+        # print(self.pressed_movement)
+        # print(to_press)
         for key in 'wasd':
             if self.pressed_movement[key] == to_press[key]:
                 continue
 
             if self.pressed_movement[key] and not to_press[key]:
-                print('release W')
+                print('release', key)
                 self.keyboard.release(key)
 
             if not self.pressed_movement[key] and to_press[key]:
-                print('press W')
+                print('press', key)
                 self.keyboard.press(key)
 
 
@@ -73,6 +74,16 @@ class KeyBoardManager():
         to_press = {'w':True, 'a':False, 's':False, 'd':True}
         self.press_keys(to_press)
         self.pressed_movement = to_press
+
+    def do_space(self):
+        if not self.pressed_space:
+            self.keyboard.press(Key.space)
+        self.pressed_space = True
+
+    def release_space(self):
+        if self.pressed_space:
+            self.keyboard.release(Key.space)
+        self.pressed_space = False
 
 
 

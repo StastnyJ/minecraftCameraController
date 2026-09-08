@@ -22,8 +22,8 @@ class Gesture_Manager():
     def detect_action(self, recognized_gestures):
         
         # While we dont see both hands do nothing
-        if (sorted([handedness[0].category_name for handedness in recognized_gestures.handedness])) != ['Left', 'Right']:
-            return
+        # if (sorted([handedness[0].category_name for handedness in recognized_gestures.handedness])) != ['Left', 'Right']:
+            # return
 
         # Iterate through hand list and call apropriate resolver functions
         for handedness, gesture, cord_xy in zip(recognized_gestures.handedness, recognized_gestures.gestures, recognized_gestures.hand_landmarks):
@@ -93,7 +93,7 @@ class Gesture_Manager():
         origin = (0.75, 0.5)
         r = np.hypot(left.x_coord - origin[0], left.y_coord - origin[1])
         theta = np.arctan2(left.y_coord - origin[1], left.x_coord - origin[0]) + np.pi
-        r2 = 0.5*50/270
+        r2 = 0.5*40/270
 
         # print(theta/np.pi, r)
  
@@ -133,10 +133,12 @@ class Gesture_Manager():
 
         # this jumps when fist
         if left.gesture == 'Closed_Fist':
-            print('press SPACE for jump')
+            self.kbd_mng.do_space()
+        else:
+            self.kbd_mng.release_space()
 
         # opens inventory when love sign
-        elif left.gesture == 'Love':
+        if left.gesture == 'Love':
             print('press E to open inventory')
         
         elif left.gesture == 'Victory':
