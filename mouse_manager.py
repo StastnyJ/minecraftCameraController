@@ -13,18 +13,6 @@ class MouseManager():
         current_mouse_pos = pyautogui.position()
         pyautogui.moveTo(current_mouse_pos.x + vector[0] * MOUSE_SENSITIVITY, current_mouse_pos.y + vector[1] * MOUSE_SENSITIVITY)
 
-    def left_click(self):
-        """
-        Clicks the left mouse button
-        """
-        pyautogui.leftClick()
-
-    def right_click(self):
-        """
-        Clicks the right mouse button
-        """
-        pyautogui.rightClick()
-
     def scroll_down(self):
         pyautogui.scroll(1)
 
