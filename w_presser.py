@@ -10,7 +10,6 @@ print("Walking forward")
 keyboard.press('w')
 
 time.sleep(10)
-
 keyboard.release('w')
 
 print("Stopped")
