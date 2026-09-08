@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import math
 from mouse_manager import MouseManager
+from keyboard_manager import KeyBoardManager
 import numpy as np
 @dataclass
 class Hand():
@@ -13,18 +14,25 @@ class Hand():
 class Gesture_Manager():
     def __init__(self):
         self.mouse_manager = MouseManager()
+        self.kbd_mng = KeyBoardManager()
         self.hand_start_pos = None
         self.hold_left_click = False
         self.hold_right_click = False
 
     def detect_action(self, recognized_gestures):
         
+        # While we dont see both hands do nothing
         if (sorted([handedness[0].category_name for handedness in recognized_gestures.handedness])) != ['Left', 'Right']:
             return
+
+        # Iterate through hand list and call apropriate resolver functions
         for handedness, gesture, cord_xy in zip(recognized_gestures.handedness, recognized_gestures.gestures, recognized_gestures.hand_landmarks):
             # print(handedness[0].category_name, gesture[0].category_name, cord_xy[0].x, cord_xy[0].y)
             if handedness[0].category_name == 'Left':
+
+                # Load right hand info into our hand data class
                 left = Hand(handedness[0].category_name, gesture[0].category_name, cord_xy[0].x, cord_xy[0].y)
+
                 self.handle_left_hand(left)
 
             # Right hand logic
@@ -33,44 +41,49 @@ class Gesture_Manager():
                 # Load right hand info into our hand data class
                 right = Hand(handedness[0].category_name, gesture[0].category_name, cord_xy[0].x, cord_xy[0].y)
 
-                # Check if we closed our fist
-                if self.hand_start_pos is None and right.gesture == 'Closed_Fist':
+                self.handle_right_hand(right)
 
-                    # We release our clicks (as we cant be holding a cosed fist and a click gesture)
-                    if self.hold_left_click or self.hold_right_click:
-                        print("Release click")
-
-                    # Reset our click booleans 
-                    self.hold_right_click = False
-                    self.hold_left_click = False
-
-                    # Set starting position for our view move
-                    self.hand_start_pos = (right.x_coord, right.y_coord)
                 
-                # Check for view drag release
-                if self.hand_start_pos is not None and right.gesture == 'Open_Fist':
-
-                    # Create our view drag vector
-                    vec = (right.x_coord - self.hand_start_pos[0], right.y_coord - self.hand_start_pos[1])
-                    self.hand_start_pos = None
-                    print(*vec)
-
-                    self.mouse_manager.move_mouse(vec)
-
-                # Check for left click gesture
-                if right.gesture == 'Pointing_Up':
-                    self.hold_left_click = True
-                    print("Left click")
-                    self.mouse_manager.left_click()
-
-                # Check for right click gesture
-                if right.gesture == 'Victory':
-                    self.hold_right_click = True
-                    print("Right click")
-                    self.mouse_manager.right_click()
     
-    def handle_right_hand():
-        pass
+    def handle_right_hand(self, right):
+        """right: right hand object @ hand object"""
+        
+        # Check if we closed our fist
+        if self.hand_start_pos is None and right.gesture == 'Closed_Fist':
+
+            # We release our left click if its being held
+            if self.hold_left_click:
+                self.kbd_mng.release_left_click()
+                
+
+            # Reset our click booleans 
+            self.hold_right_click = False
+            self.hold_left_click = False
+
+            # Set starting position for our view move
+            self.hand_start_pos = (right.x_coord, right.y_coord)
+        
+        # Check for view drag release
+        if self.hand_start_pos is not None and right.gesture == 'Open_Fist':
+
+            # Create our view drag vector
+            vec = (right.x_coord - self.hand_start_pos[0], right.y_coord - self.hand_start_pos[1])
+            self.hand_start_pos = None
+            print(*vec)
+
+            self.mouse_manager.move_mouse(vec)
+
+        # Check for left click gesture
+        if right.gesture == 'Pointing_Up':
+            self.hold_left_click = True
+            print("Left click")
+            self.kbd_mng.left_click()
+
+        # Check for right click gesture
+        if right.gesture == 'Victory':
+            self.hold_right_click = True
+            print("Right click")
+            self.kbd_mng.right_click()
             
 
     def handle_left_hand(self, left):
@@ -94,6 +107,7 @@ class Gesture_Manager():
             print('left hand in sector #2. press WD')
         elif 3/8*np.pi < theta < 5/8*np.pi:
             print('left hand in sector #3. press W')
+            self.kbd_mng.do_w()
         elif 5/8*np.pi < theta < 7/8*np.pi:
             print('left hand in sector #4. press WA')
         elif 7/8*np.pi < theta < 9/8*np.pi:
