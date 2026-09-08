@@ -64,8 +64,7 @@ with GestureRecognizer.create_from_options(gesture_recognizer_base_options) as r
         if (len(recognized_gestures.gestures)) > 0:
             gm.detect_action(recognized_gestures)
         elif len(recognized_gestures.gestures) == 0:
-            gm.kbd_mng.do_nothing()
-            gm.kbd_mng.release_space()
+            gm.kbd_mng.clear_all_actions()
 
         # if recognized_gestures.hand_landmarks:
         #     x = recognized_gestures.hand_landmarks[0][0].x
