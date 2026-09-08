@@ -3,6 +3,7 @@ import math
 from mouse_manager import MouseManager
 from keyboard_manager import KeyBoardManager
 import numpy as np
+import threading
 @dataclass
 class Hand():
     handedness: str
@@ -19,6 +20,7 @@ class Gesture_Manager():
         self.hold_left_click = False
         self.hold_right_click = False
         self.scrolling = False
+        self.mouse_move_thread = None
 
     def detect_action(self, recognized_gestures):
         
@@ -72,7 +74,14 @@ class Gesture_Manager():
             self.hand_start_pos = None
             print(f"Drag vector: {vec[0]}, {vec[1]}")
 
-            self.mouse_manager.move_mouse(vec)
+            # Keep the gesture loop responsive and avoid overlapping mouse moves.
+            if self.mouse_move_thread is None or not self.mouse_move_thread.is_alive():
+                self.mouse_move_thread = threading.Thread(
+                    target=self.mouse_manager.move_mouse,
+                    args=(vec,),
+                    daemon=True,
+                )
+                self.mouse_move_thread.start()
 
         # Check for left click gesture
         if right.gesture == 'Pointing_Up':
