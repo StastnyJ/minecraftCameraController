@@ -98,28 +98,38 @@ class Gesture_Manager():
         # print(theta/np.pi, r)
  
         if 0 <= r <= 0.5*33/270 and 0<= theta <=2*np.pi:
-            print('left hand is in the middle. do nothing')
+            self.kbd_mng.do_nothing()
+            # print('left hand is in the middle. do nothing')
         elif r < r2:
-            print('do nothing; left hand in null sector')
+            self.kbd_mng.do_nothing()
+            # print('do nothing; left hand in null sector')
         elif theta < 1/8*np.pi or theta > 15/8*np.pi:
-            print('left hand in sector #1. press D')
+            self.kbd_mng.do_d()
+            # print('left hand in sector #1. press D')
         elif 1/8*np.pi < theta < 3/8*np.pi:
-            print('left hand in sector #2. press WD')
+            self.kbd_mng.do_dw()
+            # print('left hand in sector #2. press WD')
         elif 3/8*np.pi < theta < 5/8*np.pi:
-            print('left hand in sector #3. press W')
             self.kbd_mng.do_w()
+            # print('left hand in sector #3. press W')
         elif 5/8*np.pi < theta < 7/8*np.pi:
-            print('left hand in sector #4. press WA')
+            self.kbd_mng.do_wa()
+            # print('left hand in sector #4. press WA')
         elif 7/8*np.pi < theta < 9/8*np.pi:
-            print('left hand in sector #5. press A')
+            self.kbd_mng.do_a()
+            # print('left hand in sector #5. press A')
         elif 9/8*np.pi < theta < 11/8*np.pi:
-            print('left hand in sector #6. press AS')
+            self.kbd_mng.do_as()
+            # print('left hand in sector #6. press AS')
         elif 11/8*np.pi < theta < 13/8*np.pi:
-            print('left hand in sector #7. press S')
+            self.kbd_mng.do_s()
+            # print('left hand in sector #7. press S')
         elif 13/8*np.pi < theta < 15/8*np.pi:
-            print('left hand in sector #8. press SD')
+            self.kbd_mng.do_sd()
+            # print('left hand in sector #8. press SD')
         else:
-            print('do nothing. left hand is in on the edge of two sectors')
+            self.kbd_mng.do_nothing()
+            # print('do nothing. left hand is in on the edge of two sectors')
 
         # this jumps when fist
         if left.gesture == 'Closed_Fist':

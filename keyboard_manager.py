@@ -18,6 +18,8 @@ class KeyBoardManager():
         pass
 
     def press_keys(self, to_press):
+        print(self.pressed_movement)
+        print(to_press)
         for key in 'wasd':
             if self.pressed_movement[key] == to_press[key]:
                 continue
@@ -37,6 +39,49 @@ class KeyBoardManager():
         to_press = {'w':True, 'a':False, 's':False, 'd':False}
         self.press_keys(to_press)
         self.pressed_movement = to_press
+
+    def do_wa(self):
+        to_press = {'w':True, 'a':True, 's':False, 'd':False}
+        self.press_keys(to_press)
+        self.pressed_movement = to_press
+
+    def do_a(self):
+        to_press = {'w':False, 'a':True, 's':False, 'd':False}
+        self.press_keys(to_press)
+        self.pressed_movement = to_press
+
+    def do_as(self):
+        to_press = {'w':False, 'a':True, 's':True, 'd':False}
+        self.press_keys(to_press)
+        self.pressed_movement = to_press
+    def do_s(self):
+        to_press = {'w':False, 'a':False, 's':True, 'd':False}
+        self.press_keys(to_press)
+        self.pressed_movement = to_press
+
+    def do_sd(self):
+        to_press = {'w':False, 'a':False, 's':True, 'd':True}
+        self.press_keys(to_press)
+        self.pressed_movement = to_press
+
+    def do_d(self):
+        to_press = {'w':False, 'a':False, 's':False, 'd':True}
+        self.press_keys(to_press)
+        self.pressed_movement = to_press
+
+    def do_dw(self):
+        to_press = {'w':True, 'a':False, 's':False, 'd':True}
+        self.press_keys(to_press)
+        self.pressed_movement = to_press
+
+
+
+    def do_nothing(self):
+        to_press = {'w':False, 'a':False, 's':False, 'd':False}
+        self.press_keys(to_press)
+        self.pressed_movement = to_press
+
+
     
 """
 
