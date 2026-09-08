@@ -161,12 +161,13 @@ class Gesture_Manager():
         else:
             self.kbd_mng.release_space()
 
+        print(left.gesture)
+
         # opens inventory when love sign
-        # if left.gesture == 'ILoveYou':
-            # self.kbd_mng.do_e()
-        # else:
-            # self.kbd_mng.release_e()
-            # print('press E to open inventory')
+        if left.gesture == 'ILoveYou':
+            self.kbd_mng.do_e()
+        else:
+            self.kbd_mng.release_e()
         
         if left.gesture == 'Victory':
             self.kbd_mng.change_inventory_to_right()

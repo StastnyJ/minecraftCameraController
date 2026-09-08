@@ -6,7 +6,7 @@ class KeyBoardManager():
     def __init__(self):
         self.pressed_movement = {'w': False, 'a':False, 's':False, 'd':False}  
         self.pressed_space = False
-        self.pressed_e = False
+        self.did_i_pressed_e = False
         self.keyboard = Controller()
 
 
@@ -82,21 +82,21 @@ class KeyBoardManager():
         self.pressed_space = False
 
     def do_e(self):
-        if not self.pressed_e:
+        if not self.did_i_pressed_e:
             print('do e')
             self.keyboard.press('e')
-            self.pressed_e = True
 
             time.sleep(100/1000)
 
             print('release e')
             self.keyboard.release('e')
-            self.pressed_e = False
 
+        self.did_i_pressed_e = True
 
     def release_e(self):
-        pass
-        # if self.pressed_e:
+        if self.did_i_pressed_e:
+            self.did_i_pressed_e = False
+            print('resetting love gesture')
 
     def change_inventory_to_right(self):
         pass

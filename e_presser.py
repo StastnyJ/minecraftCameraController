@@ -6,10 +6,9 @@ keyboard = Controller()
 print("Switch to Minecraft...")
 time.sleep(2)
 
-print("Walking forward")
-keyboard.press('w')
+print("opening inventory")
 
-time.sleep(10)
-keyboard.release('w')
+keyboard.tap('e')
+# keyboard.type('e')
 
 print("Stopped")
