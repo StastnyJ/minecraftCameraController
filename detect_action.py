@@ -18,7 +18,6 @@ class Gesture_Manager():
         self.kbd_mng = KeyBoardManager()
         self.hand_start_pos = None
         self.hold_left_click = False
-        self.hold_right_click = False
         self.scrolling = False
         self.mouse_move_thread = None
 
@@ -88,10 +87,11 @@ class Gesture_Manager():
             self.hold_left_click = True
             print("Left click")
             self.kbd_mng.left_click()
+        if self.hold_right_click and right.gesture != 'Pointing_Up':
+            self.kbd_mng.release_left_click()
 
         # Check for right click gesture
         if right.gesture == 'Victory':
-            self.hold_right_click = True
             print("Right click")
             self.kbd_mng.right_click()
         if right.gesture == 'Thumb_Up' and not self.scrolling:
