@@ -10,7 +10,7 @@ import random as rd
 from add_crosshairs_to_camera import add_crosshairs_to_camera
 
 # set up camera
-cam = cv2.VideoCapture('/dev/video34', cv2.CAP_V4L2)
+cam = cv2.VideoCapture('/dev/video1', cv2.CAP_V4L2)
 
 # setup gesture recognizer model
 BaseOptions = mp.tasks.BaseOptions

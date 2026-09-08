@@ -1,6 +1,6 @@
 import cv2
 
-cam = cv2.VideoCapture('/dev/video33', cv2.CAP_V4L2)
+cam = cv2.VideoCapture('/dev/video4', cv2.CAP_V4L2)
 
 
 
