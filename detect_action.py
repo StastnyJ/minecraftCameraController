@@ -10,19 +10,16 @@ class Hand():
     y_coord: float
 
 
-
-
-
-
-
 class Gesture_Manager():
     def __init__(self):
         self.mouse_manager = MouseManager()
         self.hand_start_pos = None
         self.hold_left_click = False
         self.hold_right_click = False
+        self.scrolling = False
 
     def detect_action(self, recognized_gestures):
+        
         if (sorted([handedness[0].category_name for handedness in recognized_gestures.handedness])) != ['Left', 'Right']:
             return
         for handedness, gesture, cord_xy in zip(recognized_gestures.handedness, recognized_gestures.gestures, recognized_gestures.hand_landmarks):
@@ -44,14 +41,27 @@ class Gesture_Manager():
                     self.hand_start_pos = None
                     print(*vec)
                     self.mouse_manager.move_mouse(vec)
+
+                if right.gesture == 'Thumb_Up' and not self.scrolling:
+                    self.scrolling = True
+                    print("Scrolling up")
+                    self.mouse_manager.scroll_up()
+                if right.gesture != 'Thumb_Up' and self.scrolling:
+                    print("Stop scrolling")
+                    self.scrolling = False
+                if right.gesture == 'Thumb_Down' and not self.scrolling:
+                    self.scrolling = True
+                    self.mouse_manager.scroll_down()
+                if right.gesture != 'Thumb_Down' and self.scrolling:
+                    self.scrolling = False
                 if right.gesture == 'Pointing_Up':
                     self.hold_left_click = True
                     print("Left click")
-                    self.mouse_manager.left_click()
+                    # press O
                 if right.gesture == 'Victory':
                     self.hold_right_click = True
                     print("Right click")
-                    self.mouse_manager.right_click()
+                    # press P
             
 
     def handle_left_hand(self, left):
@@ -59,8 +69,9 @@ class Gesture_Manager():
         # this takes care of horizontal movement (eg wasd)
         # to radial coords
         origin = (0.25, 0.5)
-        r = np.hypot(left.x_cord - origin[0], left.y_cord - origin[1])
-        theta = np.arctan2(left.y_cord - origin[1], left.x_cord - origin[0])
+        r = np.hypot(left.x_coord - origin[0], left.y_coord - origin[1])
+        theta = np.arctan2(left.y_coord - origin[1], left.x_coord - origin[0])
+        print(r, theta)
         r2 = 0.5*101/270
         if 0 <= r <= 0.5*67/270 and 0<= theta <=2*np.pi:
             print('left hand is in the middle. do nothing')

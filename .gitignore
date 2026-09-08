@@ -1,0 +1,5 @@
+.venv/**
+__pycache__/add_crosshairs_to_camera.cpython-312.pyc
+__pycache__/detect_action.cpython-312.pyc
+__pycache__/mouse_manager.cpython-312.pyc
+__pycache__/visualize_hand.cpython-312.pyc
