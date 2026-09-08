@@ -10,11 +10,6 @@ class Hand():
     y_coord: float
 
 
-
-
-
-
-
 class Gesture_Manager():
     def __init__(self):
         self.mouse_manager = MouseManager()
@@ -23,6 +18,7 @@ class Gesture_Manager():
         self.hold_right_click = False
 
     def detect_action(self, recognized_gestures):
+        
         if (sorted([handedness[0].category_name for handedness in recognized_gestures.handedness])) != ['Left', 'Right']:
             return
         for handedness, gesture, cord_xy in zip(recognized_gestures.handedness, recognized_gestures.gestures, recognized_gestures.hand_landmarks):
@@ -59,8 +55,9 @@ class Gesture_Manager():
         # this takes care of horizontal movement (eg wasd)
         # to radial coords
         origin = (0.25, 0.5)
-        r = np.hypot(left.x_cord - origin[0], left.y_cord - origin[1])
-        theta = np.arctan2(left.y_cord - origin[1], left.x_cord - origin[0])
+        r = np.hypot(left.x_coord - origin[0], left.y_coord - origin[1])
+        theta = np.arctan2(left.y_coord - origin[1], left.x_coord - origin[0])
+        print(r, theta)
         r2 = 0.5*101/270
         if 0 <= r <= 0.5*67/270 and 0<= theta <=2*np.pi:
             print('left hand is in the middle. do nothing')
