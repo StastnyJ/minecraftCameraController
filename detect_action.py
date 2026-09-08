@@ -93,11 +93,11 @@ class Gesture_Manager():
         origin = (0.75, 0.5)
         r = np.hypot(left.x_coord - origin[0], left.y_coord - origin[1])
         theta = np.arctan2(left.y_coord - origin[1], left.x_coord - origin[0]) + np.pi
-        r2 = 0.5*40/270
+        r2 = 0.5*25/270
 
         # print(theta/np.pi, r)
  
-        if 0 <= r <= 0.5*33/270 and 0<= theta <=2*np.pi:
+        if 0 <= r <= 0.5*25/270 and 0<= theta <=2*np.pi:
             self.kbd_mng.do_nothing()
             # print('left hand is in the middle. do nothing')
         elif r < r2:
