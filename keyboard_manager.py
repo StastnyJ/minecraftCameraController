@@ -6,6 +6,7 @@ class KeyBoardManager():
     def __init__(self):
         self.pressed_movement = {'w': False, 'a':False, 's':False, 'd':False}  
         self.pressed_space = False
+        self.pressed_e = False
         self.keyboard = Controller()
 
 
@@ -26,15 +27,10 @@ class KeyBoardManager():
                 continue
 
             if self.pressed_movement[key] and not to_press[key]:
-                print('release', key)
                 self.keyboard.release(key)
 
             if not self.pressed_movement[key] and to_press[key]:
-                print('press', key)
                 self.keyboard.press(key)
-
-
-
 
     def do_w(self):
         to_press = {'w':True, 'a':False, 's':False, 'd':False}
@@ -85,7 +81,32 @@ class KeyBoardManager():
             self.keyboard.release(Key.space)
         self.pressed_space = False
 
+    def do_e(self):
+        if not self.pressed_e:
+            print('do e')
+            self.keyboard.press('e')
+            self.pressed_e = True
 
+            time.sleep(100/1000)
+
+            print('release e')
+            self.keyboard.release('e')
+            self.pressed_e = False
+
+
+    def release_e(self):
+        pass
+        # if self.pressed_e:
+
+    def change_inventory_to_right(self):
+        pass
+    
+
+
+
+    def clear_all_actions(self):
+        self.do_nothing()
+        self.release_space()
 
     def do_nothing(self):
         to_press = {'w':False, 'a':False, 's':False, 'd':False}
@@ -94,19 +115,3 @@ class KeyBoardManager():
 
 
     
-"""
-
-import time
-
-
-print("Switch to Minecraft...")
-time.sleep(5)
-
-print("Walking forward")
-keyboard.press('w')
-
-time.sleep(10)
-keyboard.release('w')
-
-print("Stopped")
-"""
