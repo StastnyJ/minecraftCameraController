@@ -18,6 +18,7 @@ class Gesture_Manager():
         self.hand_start_pos = None
         self.hold_left_click = False
         self.hold_right_click = False
+        self.scrolling = False
 
     def detect_action(self, recognized_gestures):
         
@@ -51,7 +52,7 @@ class Gesture_Manager():
         # Check if we closed our fist
         if self.hand_start_pos is None and right.gesture == 'Closed_Fist':
 
-            # We release our left click if its being held
+            # We releashand_start_pose our left click if its being held
             if self.hold_left_click:
                 self.kbd_mng.release_left_click()
                 
@@ -64,12 +65,12 @@ class Gesture_Manager():
             self.hand_start_pos = (right.x_coord, right.y_coord)
         
         # Check for view drag release
-        if self.hand_start_pos is not None and right.gesture == 'Open_Fist':
+        if self.hand_start_pos is not None and right.gesture == 'Open_Palm':
 
             # Create our view drag vector
             vec = (right.x_coord - self.hand_start_pos[0], right.y_coord - self.hand_start_pos[1])
             self.hand_start_pos = None
-            print(*vec)
+            print(f"Drag vector: {vec[0]}, {vec[1]}")
 
             self.mouse_manager.move_mouse(vec)
 
@@ -84,6 +85,20 @@ class Gesture_Manager():
             self.hold_right_click = True
             print("Right click")
             self.kbd_mng.right_click()
+        if right.gesture == 'Thumb_Up' and not self.scrolling:
+            print(self.scrolling)
+            self.scrolling = True
+
+            print("Scrolling up")
+            self.mouse_manager.scroll_up()
+        if right.gesture != 'Thumb_Up' and right.gesture != 'Thumb_Down' and self.scrolling:
+            print("Stop scrolling")
+            self.scrolling = False
+        if right.gesture == 'Thumb_Down' and not self.scrolling:
+            self.scrolling = True
+            self.mouse_manager.scroll_down()
+        if right.gesture != 'Thumb_Down' and right.gesture != 'Thumb_Up' and self.scrolling:
+            self.scrolling = False
             
 
     def handle_left_hand(self, left):
